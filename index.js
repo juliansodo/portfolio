@@ -25,9 +25,15 @@ const app = new Vue({
         {
           id:'sistemaBursatil',
           titulo:'Consultas Online',
-          subtitulo:'Sistema de consultas online para empresa bursatil,',
-          caracteristicas:'; Login para el usuario; Recuperación de clave mediante e-mail; Cambio de clave; Consulta completa de cuenta; Filtro por fechas, especie y cantidad de resultados; Sistema administrativo; Registro de movimientos en la web tanto de los usuarios como de los administradores',
-          tareasUsuario:'El usuario podrá consultar el estado de su cuenta, el saldo, tanto en pesos como en dólares, el usuario podrá ver el estado de sus inversiones en tablas, gráficos. También podrá ver los precios de las especies en cualquier día (sin API); CUENTA CORRIENTE - TENENCIA - HISTÓRICO - RESULTADO - OPERACIONES - PRECIOS ',
+          subtitulo:'Sistema de consultas online para Empresa Bursatil',
+          caracteristicas:'Login para el usuario; Recuperación de clave mediante e-mail; Cambio de clave; Consulta completa de cuenta; Filtro por fechas, especie y cantidad de resultados; Sistema administrativo; Registro de movimientos en la web tanto de los usuarios como de los administradores',
+          tareasUsuario:[
+            'El usuario podrá consultar el estado de su cuenta, el saldo, tanto en pesos como en dólares',
+            'El usuario podrá ver el estado de sus inversiones en tablas y gráficos',
+            'También podrá ver los precios de las especies en cualquier día (sin API);',
+            'Posibilidad de exportar tablas en CSV',
+            'CUENTA CORRIENTE - TENENCIA - HISTÓRICO - RESULTADO - OPERACIONES - PRECIOS '
+          ],
           admin: true,
           tareasAdministrador:
           [
@@ -46,8 +52,11 @@ const app = new Vue({
           tecnologias:
           [
             "HTML",
-            "CSS (Bootstrap, Semantic ui)",
-            "JS"
+            "CSS(Bootstrap, Semantic ui)",
+            "JS(VueJS)",
+            "PHP",
+            "MYSQL",
+            "WS(VB.NET/MSSQL)"
           ]
         }
       ]
