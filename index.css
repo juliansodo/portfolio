@@ -1,0 +1,10 @@
+body{
+    padding: 0;
+    margin: 0;
+    background-image: url(media/fondo2.jpg);
+    font-family: 'Josefin Sans', sans-serif;
+}
+
+.card-title{
+    margin-bottom: 0;
+}

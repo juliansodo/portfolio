@@ -4,22 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="https://fonts.googleapis.com/css?family=Josefin+Sans&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="index.css">
     <title>Julián Sodo - Portfolio</title>
 </head>
 <body>
     <div id="app" class="container">
         <nav class="navbar navbar-expand-lg alert rounded-0 alert-primary navbar-light mb-0">
             <div class="collapse navbar-collapse" id="navbarPortfolio">
-                <ul class="navbar-nav mx-auto">
+                <ul class="navbar-nav mx-auto fuente">
                     <li class="nav-item active">
-                        <router-link to="/">Inicio</router-link>
+                        <router-link to="/"><h5>Sobre mí</h5></router-link>
                     </li>
                     <li class="nav-item ml-4">
-                            <router-link to="/trabajos">Trabajos</router-link>
-                    </li>
-                    <li class="nav-item ml-4">
-                            <router-link to="/cv">Currículum</router-link>
+                            <router-link to="/trabajos"><h5>Trabajos</h5></router-link>
                     </li>
                 </ul>
             </div>
@@ -31,25 +30,26 @@
             <div class="container-fluid p-0">
                 <div class="card rounded-0 ">
                     <div class="card-header  mb-0">
-                        <div class="card-title h2 text-center">
+                        <div class="card-title h1 text-center">
                             Trabajos realizados
                         </div>
                     </div>
                     <div class="card-body bg-light">
-                        <div class="row">
-                            <div class="card col-md-4 p-0" v-for="trabajo of trabajos">
-                                <div class="card-header">
+                        <div class="card-deck" v-for="grupo of deck">
+                            <div class="card col-md-4 p-0 mb-2" v-for="trabajo of grupo">
+                                <div class="card-header alert alert-success mb-0">
                                     <div class="card-title text-center">
-                                        <h4>{{trabajo.titulo}}</h4>
+                                        <h5>{{trabajo.titulo}}</h5>
                                     </div>
                                 </div>
-                                <div class="card-body">
+                                <img :src="trabajo.media[0].path" alt="" class="card-img-top  rounded-0">
+                                <div class="card-body alert alert-success mb-0 rounded-0">
                                     <div class="card-text font-weight-bold ">
-                                        {{trabajo.subtitulo}}
+                                        <h6>{{trabajo.subtitulo}}</h6>
                                     </div>  
                                 </div>
                                 <div class="card-footer p-0">
-                                    <a :data-target="'#'+trabajo.id"  data-toggle="modal" class="btn btn-primary btn-block rounded-0 text-white">Visualizar</a>
+                                    <a :data-target="'#'+trabajo.id"  data-toggle="modal" class="btn btn-success btn-block rounded-0 text-white">Visualizar</a>
                                 </div>
                             </div>
                         </div>
@@ -57,64 +57,135 @@
                 </div>
             </div>
         </div>
-        <div class="modal" tabindex="-1" role="dialog" :id="trabajo.id" v-for="trabajo of trabajos">
-            <div class="modal-dialog" style="max-width: 75%;" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title text-center">
-                            {{trabajo.titulo}}
-                        </h5>
-                    </div>
-                    <div class="modal-body">
-                        <p class="font-weight-bold text-center">{{trabajo.subtitulo}}</p>
-                        <div class="carousel slide " style="max-height:350px" :id="'carousel'+trabajo.id" data-ride="carousel">
-                            <div class="carousel-inner">
-                                <div class="carousel-item active">
-                                    <img src="https://cdn.pixabay.com/photo/2018/03/21/10/01/desktop-3246124__340.jpg" alt="" class="w-100 d-block">
+        <div  v-for="grupo of deck">
+            <div class="modal" tabindex="-1" role="dialog" :id="trabajo.id" v-for="trabajo of grupo">
+                <div class="modal-dialog col-sm-4 col-md-8" style="max-width:1024px;" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title text-center">
+                                {{trabajo.titulo}}
+                            </h5>
+                            <button class="close" data-dismiss='modal' aria-label='close' type="button">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <p class="font-weight-bold text-center">{{trabajo.subtitulo}}</p>
+                            <div class="card border-bottom-0 rounded-0">
+                                <div class=" btn card-header mb-0 alert alert-primary font-weight-bold" style="cursor:grab"  data-toggle="collapse" :href="'#collapseMedia_'+trabajo.id" role="button" aria-expanded="false" aria-controls="collapseExample">
+                                    Mostrar/Ocultar imágenes
                                 </div>
-                                <div class="carousel-item">
-                                    <img src="https://cdn.pixabay.com/photo/2015/12/31/08/47/background-1115343_960_720.jpg" alt="" class="w-100 d-block">
+                                <div class="collapse" :id="'collapseMedia_'+trabajo.id">
+                                    <div class="card-body p-0  w-100">
+                                        <div class="carousel m-0 slide" :id="'carousel'+trabajo.id" data-ride="carousel">
+                                            <div class="carousel-inner  ">
+                                                <div class="carousel-item w-100  mh-100" :class="{'active':imagen.id==0}" v-for="imagen of trabajo.media">
+                                                    <img  :src="imagen.path" alt="" class="img-fluid d-block" v-if="imagen.tipo == 'img'">
+                                                </div>
+                                            </div>
+                                            <a class="carousel-control-prev" :href="'#carousel'+trabajo.id" role="button" data-slide="prev">
+                                                <span class="carousel-control-prev-icon"></span>
+                                            </a>
+                                            <a :href="'#carousel'+trabajo.id" class="carousel-control-next" role="button" data-slide="next">
+                                                <span class="carousel-control-next-icon"></span>
+                                            </a>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                            <a :href="'#carousel'+trabajo.id" class="carousel-control-prev" role="button" data-slide="prev">
-                                <span class="carousel-control-prev-icon"></span>
-                            </a>
-                            <a :href="'#carousel'+trabajo.id" class="carousel-control-next" role="button" data-slide="next">
-                                <span class="carousel-control-next-icon"></span>
-                            </a>
-                        </div>
-                        <div class="container">
-                            <div class="row mt-2">
-                                <div class="card mt-1 col-md-6 p-0">
-                                    <div class="card-header alert alert-primary font-weight-bold">
-                                            Características
+                            <div v-if="trabajo.tieneVideo">
+                                <div class="card border-bottom-0 rounded-0">
+                                    <div class="btn card-header mb-0 alert alert-primary font-weight-bold" data-toggle="collapse" :href="'#collapseVideo_'+trabajo.id" role="button">
+                                        Ver video
                                     </div>
-                                    <div class="card-body pt-0">
-                                        <ul>
-                                            <li v-for="caracteristica of trabajo.caracteristicas.split(';')">
-                                                {{caracteristica}}
-                                            </li> 
-                                        </ul>       
+                                    <div class="collapse" :id="'collapseVideo_'+trabajo.id">
+                                        <video width="100%" controls muted>
+                                            <source :src="trabajo.video.path" :type="trabajo.video.tipo">
+                                        </video>
                                     </div>
                                 </div>
-                                <div class="card mt-1 col-md-6 p-0">
-                                    <div class="card-header alert alert-primary font-weight-bold">
-                                        Tareas del usuario
-                                    </div>
-                                    <div class="card-body pt-0">
-                                        <ul>
-                                            <li v-for="tarea of trabajo.tareasUsuario">{{tarea}}</li>
-                                        </ul>
+                            </div>
+                            <div v-if="trabajo.tieneDemo">
+                                <div class="card border-bottom-0 rounded-0">
+                                    <a role="button" class="btn card-header mb-0 alert alert-success font-weight-bold" data-toggle="collapse" :href="'#collapseDemo_'+trabajo.id">Acceder a una demostración</a>
+                                    <div class="collapse" :id="'collapseDemo_'+trabajo.id">
+                                        <div class="card-body">
+                                            <p v-for="credencial of trabajo.demostracion.credenciales"><b>{{credencial.tipo}}</b>: {{credencial.dato}}</p>
+                                            <p v-if="trabajo.demostracion.aclaracion.length>0"><b>Aclaracion:</b> {{trabajo.demostracion.aclaracion}}</p>
+                                            <iframe :src="trabajo.demostracion.url" frameborder="0" width="100%" height="600px"></iframe>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="card mt-1 col-md-6 p-0">
-                                    <div class="card-header alert alert-primary font-weight-bold">
-                                        Tareas del administrador
+                            </div>
+                        <!-- <div v-if="trabajo.tieneDemo">
+                                <a :data-target="'#demoModal_'+trabajo.id" onclick="alert('Se abrirá un iframe apuntando al sitio que hostea actualmente la vista.')" data-toggle="modal" class="font-weight-bold btn btn-block alert alert-success rounded-0">Acceder a una demostración</a>
+                                <div class="modal" tabindex="1" role="dialog" :id="'demoModal_'+trabajo.id">
+                                    <div class="modal-dialog" style="max-width: 100%;" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <div class="modal-title">
+                                                    Demostración de  {{trabajo.titulo}}
+                                                </div>
+                                                <button class="close" data-dismiss='modal' aria-label='close' type="button">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-content">
+                                                <div class="modal-body">
+                                                    <p v-for="credencial of trabajo.demostracion.credenciales"><b>{{credencial.tipo}}</b>: {{credencial.dato}}</p>
+                                                    <p v-if="trabajo.demostracion.aclaracion.length>0"><b>Aclaracion:</b> {{trabajo.demostracion.aclaracion}}</p>
+                                                    <iframe :src="trabajo.demostracion.url" frameborder="0" width="100%" height="600px"></iframe>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="card-body pt-0">
-                                        <ul>
-                                            <li v-for="tarea of trabajo.tareasAdministrador">{{tarea}}</li>
-                                        </ul>
+                                </div>
+                            </div>-->
+                            <div class="container">
+                                <div class="card-deck mt-2">
+                                    <div class="card mt-1 col-md-6 p-0">
+                                        <div class="card-header alert alert-primary font-weight-bold">
+                                                Características
+                                        </div>
+                                        <div class="card-body pt-0">
+                                            <ul>
+                                                <li v-for="caracteristica of trabajo.caracteristicas">
+                                                    {{caracteristica}}
+                                                </li> 
+                                            </ul>       
+                                        </div>
+                                    </div>
+                                    <div class="card mt-1 col-md-6 p-0">
+                                        <div class="card-header alert alert-primary font-weight-bold">
+                                            Tareas del usuario
+                                        </div>
+                                        <div class="card-body pt-0">
+                                            <ul>
+                                                <li v-for="tarea of trabajo.tareasUsuario">{{tarea}}</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div :class="">
+                                    <div class="card mt-1 col-md-6 p-0" v-if="trabajo.admin">
+                                        <div class="card-header alert alert-primary font-weight-bold">
+                                            Tareas del administrador
+                                        </div>
+                                        <div class="card-body pt-0">
+                                            <ul>
+                                                <li v-for="tarea of trabajo.tareasAdministrador">{{tarea}}</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="card mt-1 col-md-6 p-0" v-if="trabajo.tecnologias.length>0">
+                                        <div class="card-header alert alert-primary font-weight-bold">
+                                            Tecnologías utilizadas
+                                        </div>
+                                        <div class="card-body pt-0">
+                                            <ul>
+                                                <li v-for="tecnologia of trabajo.tecnologias">{{tecnologia}}</li>
+                                            </ul>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
